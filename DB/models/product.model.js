@@ -32,12 +32,12 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
+    brandId: { type: Schema.Types.ObjectId, ref: "Brand", required: true },
     subCategoryId: {
       type: Schema.Types.ObjectId,
       ref: "SubCategory",
       required: true,
     },
-    brandId: { type: Schema.Types.ObjectId, ref: "Brand", required: true },
   },
   { timestamps: true }
 );

@@ -52,7 +52,7 @@ export const addCategory = async (req, res, next) => {
 
   // * create the category document
   const categoryDocument = await Category.create(category);
-  req.savedDocuments = { model: Category, _id: categoryDocument._id }
+  req.savedDocuments = { model: Category, _id: categoryDocument._id };
 
   // * response successfully created
   res.status(201).json({
@@ -207,4 +207,22 @@ export const getAllCategory = async (req, res, next) => {
   res
     .status(200)
     .json({ success: true, message: "categories found", date: categories });
+};
+
+//============================== Get all  categories with subCategories with brands with products  =================================//
+/**
+ * * get all category with populate "subCategories" and populate "Brands" and populate "Product"
+ * * response successfully
+ */
+export const getAllData = async (req, res, next) => {
+  // * get all category with populate "subCategories" and populate "Brands" and populate "Product"
+  const allData = await Category.find().populate([
+    {
+      path: "subCategories",
+      populate: [{ path: "Brands", populate: [{ path: "Products" }] }],
+    },
+  ]);
+
+  // * response successfully
+  res.status(200).json({ success: true, message: "all data", date: allData });
 };

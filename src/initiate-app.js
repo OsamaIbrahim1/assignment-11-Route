@@ -15,6 +15,7 @@ export const initiateApp = (app, express) => {
   app.use("/subCategory", routers.subCategoryRouter);
   app.use("/brand", routers.brandRouter);
   app.use("/product", routers.productRouter);
+  app.use("/cart", routers.cartRouter);
   app.use(globalResponse, rollbackUploadedFiles, rollbackSavedDocuments);
 
   db_connection();

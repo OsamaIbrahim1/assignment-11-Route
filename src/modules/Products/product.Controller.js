@@ -4,6 +4,7 @@ import { systemRoles } from "../../utils/system-role.js";
 import cloudinaryConnection from "../../utils/cloudinary.js";
 import generateUniqueString from "../../utils/generate-Unique-String.js";
 import Product from "../../../DB/models/product.model.js";
+import { APIFeature } from "../../utils/api-features.js";
 
 //================================= add product =================================//
 /**
@@ -99,7 +100,18 @@ export const addProduct = async (req, res, next) => {
 
 //================================= update product =================================//
 /**
- *
+ * * destructure data from body and authUser
+ * * find product by _id
+ * * authorized update product
+ * * if user wants to update title product
+ * * if user wants to update description product
+ * * if user wants to update stock product
+ * * if user wants to update specs product
+ * * if user wants to update price product
+ * * if user wants to update image product
+ * * update image and use same public id and folder id
+ * * save updates product
+ * * response successfully
  */
 export const updateProduct = async (req, res, next) => {
   // * destructure data from body and authUser
@@ -134,7 +146,7 @@ export const updateProduct = async (req, res, next) => {
   // * if user wants to update stock product
   if (stock) product.stock = stock;
 
-  // * if user wants to update price product
+  // * if user wants to update specs product
   if (specs) product.specs = JSON.parse(specs);
 
   // * if user wants to update price product
@@ -171,9 +183,161 @@ export const updateProduct = async (req, res, next) => {
   // * save updates product
   product.updatedBy = _id;
   await product.save();
-
   // * response successfully
   res
     .status(200)
     .json({ success: true, message: `Successfully updated`, data: product });
+};
+
+//================================= delete product =================================//
+/**
+ * * destructure data from authUser and query
+ * * check if product is already exists
+ * * check if user super admin or owner this product to delete product
+ * * delete images
+ * * delete product
+ * * response successfully
+ */
+export const deleteProduct = async (req, res, next) => {
+  // * destructure data from authUser and query
+  const { productId } = req.query;
+  const { _id } = req.authUser;
+
+  // * check if product is already exists
+  const product = await Product.findById(productId);
+  if (!product) {
+    return next("product not found", { cause: 404 });
+  }
+
+  // * check if user super admin or owner this product to delete product
+  if (
+    product.addedBy.toString() !== _id.toString() &&
+    req.authUser.role !== systemRoles.SUPER_ADMIN
+  ) {
+    return next("you can't delete a product", { cause: 400 });
+  }
+
+  // * delete images
+  const pathFolder = product.Images[0].public_id.split(
+    `${product.folderId}/`
+  )[0];
+  console.log(pathFolder + `${product.folderId}/`);
+  await cloudinaryConnection().api.delete_resources_by_prefix(
+    pathFolder + `${product.folderId}/`
+  );
+  await cloudinaryConnection().api.delete_folder(
+    pathFolder + `${product.folderId}/`
+  );
+
+  // * delete product
+  await Product.findByIdAndDelete(productId);
+
+  // * response successfully
+  res.status(200).json({
+    success: true,
+    message: "product deleted successfully",
+    data: product,
+  });
+};
+
+//================================= Get product by id =================================//
+/**
+ * * destructure data from query
+ * * check if product is existing
+ * * response successfully
+ */
+export const getProductById = async (req, res, next) => {
+  // * destructure data from query
+  const { productId } = req.query;
+
+  // * check if product is existing
+  const product = await Product.findById(productId);
+  if (!product) {
+    return next("Product not found", { cause: 404 });
+  }
+
+  // * response successfully
+  res
+    .status(200)
+    .json({ success: true, message: "Product data", data: product });
+};
+
+//================================= Search on product with any field =================================//
+/**
+ * * destructure data from body
+ * * search by any field
+ * * response successfully
+ */
+export const searchWithAnyField = async (req, res, next) => {
+  // * destructure data from body
+  const { title, desc, basePrice, discount, appliedPrice, stock, rate } =
+    req.body;
+
+  // * search by any field
+  const product = await Product.find({
+    $or: [
+      { title: { $regex: title, $options: "i" } },
+      { desc },
+      { basePrice },
+      { discount },
+      { appliedPrice },
+      { stock },
+    ],
+  });
+  if (!product) {
+    return next("product not found", { cause: 404 });
+  }
+
+  // * response successfully
+  res.status(200).json({
+    success: true,
+    message: "product found successfully",
+    data: product,
+  });
+};
+
+//================================= get All product with pagination =================================//
+/**
+ * * destructure data from query
+ * * find data and paginate it
+ * * response successfully
+ */
+export const getAllProducts = async (req, res, next) => {
+  //  * destructure data from query
+  const { page, size, sort, ...search } = req.query;
+
+  // * find data and paginate it
+  const features = new APIFeature(req.query, Product.find()).pagination({
+    page,
+    size,
+  });
+
+  const products = await features.mongooseQuery;
+
+  // * response successfully
+  res
+    .status(200)
+    .json({ success: true, message: "get all products", data: products });
+};
+
+//============================== all products for 2 specific brands using ( in operator) =================================//
+/**
+ * * destructure data from query
+ * * get all products for the specified brands
+ * * response successfully
+ */
+export const productsForTwoSpecificBrands = async (req, res, next) => {
+  // * destructure data from query
+  const { brand_1, brand_2 } = req.query;
+
+  // * get all products for the specified brands
+  const products = await Product.find({ brandId: [brand_1, brand_2] });
+  if (!products.length) {
+    return next("products not found", { cause: 404 });
+  }
+
+  // * response successfully
+  res
+    .status(200)
+    .json({ success: true, message: "Product found", data: products });
 };

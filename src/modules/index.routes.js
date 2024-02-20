@@ -3,6 +3,7 @@ import categoryRouter from "./Categories/category.routes.js";
 import subCategoryRouter from "./Sub-Categories/Sub-Categories.routes.js";
 import brandRouter from "./Brands/brand.routes.js";
 import productRouter from "./Products/product.routes.js";
+import cartRouter from "./Cart/cart.routes.js"
 
 export {
   userRouter,
@@ -10,4 +11,5 @@ export {
   subCategoryRouter,
   brandRouter,
   productRouter,
+  cartRouter
 };

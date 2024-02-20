@@ -43,4 +43,6 @@ router.get(
   expressAsyncHandler(categoryController.getAllCategory)
 );
 
+router.get("/getAllData", expressAsyncHandler(categoryController.getAllData));
+
 export default router;
