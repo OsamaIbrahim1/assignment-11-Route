@@ -1,0 +1,301 @@
+{
+	"info": {
+		"_postman_id": "fb573f91-888a-491f-ab47-0a312d566791",
+		"name": "puffin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28386742",
+		"_collection_link": "https://martian-flare-534236.postman.co/workspace/Sala7ly~75c79d53-b390-423c-8a85-19ab704724b8/collection/28386742-fb573f91-888a-491f-ab47-0a312d566791?action=share&source=collection_link&creator=28386742"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "sign up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"osama\",\r\n    \"email\":\"osama@gmail.com\",\r\n    \"password\":\"os12!@\",\r\n    \"role\":\"Admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/auth/signUp",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"signUp"
+							]
+						},
+						"description": "The `POST /auth/signUp` endpoint is used to register a new user.\n\n### Request Body\n\n- `name` (string, required): The name of the user, it must be contain from 3 letter to 30 letter (uppercase or lowercase).\n    \n- `email` (string, required): The email address of the user.\n    \n- `password` (string, required): The password for the user account, it must be contain from 6 characters to 30 characters and it contain minimum 2 number and 2 letter (uppercase or lowercase) and 2 Symbols (!@#$%^&\\*) .\n    \n- `role` (string, required): The role of the user, \\[Admin or User\\].\n    \n\n### Response\n\nThe response of this request is a JSON object following the schema below:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"userId\": {\n      \"type\": \"string\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"email\": {\n      \"type\": \"string\"\n    },\n    \"role\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\"userId\", \"name\", \"email\", \"role\"]\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "sign in",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"osama@gmail.com\",\r\n    \"password\":\"os12!@\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/auth/signIn",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"signIn"
+							]
+						},
+						"description": "The `POST /auth/signIn` endpoint is used to authenticate and sign in a user. It expects a JSON payload in the request body with the user's email and password.\n\n### Request Body\n\n- email (string, required): The email of the user.\n    \n- `password` (string, required): The password for the user account, it must be contain from 6 characters to 30 characters and it contain minimum 2 number and 2 letter (uppercase or lowercase) and 2 Symbols (!@#$%^&\\*).\n    \n\n### Response\n\nThe response of this request is a JSON object with the following schema:\n\n``` json\n{\n  \"token\": \"string\",\n  \"userId\": \"string\"\n}\n\n ```\n\n- token (string): The authentication token for the signed-in user.\n    \n- userId (string): The unique identifier of the signed-in user."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Book",
+			"item": [
+				{
+					"name": "create book",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accesstoken",
+								"value": "accesstoken_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjliYTJkMWYyNThkNGFmZWIyMjg5MCIsImVtYWlsIjoib3NhbWFAZ21haWwuY29tIiwicm9sZSI6IkFkbWluIiwiaWF0IjoxNzI3NjUyMzg1LCJleHAiOjE3Mjc3Mzg3ODV9.PiXCvQKhg1okvTbgTwsVekP0gkG4E9xr_AikNs-0x5k",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "book 2",
+									"type": "text"
+								},
+								{
+									"key": "author",
+									"value": "osama abdelfatah",
+									"type": "text"
+								},
+								{
+									"key": "pages",
+									"value": "400",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "800",
+									"type": "text"
+								},
+								{
+									"key": "summary",
+									"value": "this book is Arabic book",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/hp/Pictures/Screenshots/osama.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/book/createBook",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"book",
+								"createBook"
+							]
+						},
+						"description": "### Create Book\n\nThis endpoint allows you to create a new book by providing the title, author, pages, price, summary, and an image.\n\n**Request Body**\n\n- `title` (text): The title of the book.\n    \n- `author` (text): The author of the book.\n    \n- `pages` (text): The number of pages in the book.\n    \n- `price` (text): The price of the book.\n    \n- `summary` (text): A brief summary of the book.\n    \n- `image` (file): The image of the book.\n    \n\n**Request Headers**\n\n- `accesstoken` (text): the token of user\n    \n\n**Response**\n\n- Status: 201\n    \n- Content-Type: application/json\n    \n- `message`: A message indicating the result of the request.\n    \n- `book`: An object containing the details of the created book, including title, author, pages, price, summary, image, folderId, addedBy, _id, createdAt, updatedAt, and __v."
+					},
+					"response": []
+				},
+				{
+					"name": "update book",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accesstoken",
+								"value": "accesstoken_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjliYTJkMWYyNThkNGFmZWIyMjg5MCIsImVtYWlsIjoib3NhbWFAZ21haWwuY29tIiwicm9sZSI6IkFkbWluIiwiaWF0IjoxNzI3NjUzNjA0LCJleHAiOjE3Mjc3NDAwMDR9.BXwZYUez4o6t_ekf4u3t4o8H1aDifu7J-MklCt__uCU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "book 3",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "800",
+									"type": "text"
+								},
+								{
+									"key": "pages",
+									"value": "600",
+									"type": "text"
+								},
+								{
+									"key": "summary",
+									"value": "this book is Arabic book",
+									"type": "text"
+								},
+								{
+									"key": "author",
+									"value": "osama abdallah",
+									"type": "text"
+								},
+								{
+									"key": "oldPublicId",
+									"value": "Puffin/Books/ace1/e2pcuoyc688e4zmtvvws",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/hp/Pictures/Screenshots/Screenshot (43).png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/book/updateBook/66f9e3defa4c80ba1e3919a8",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"book",
+								"updateBook",
+								"66f9e3defa4c80ba1e3919a8"
+							]
+						},
+						"description": "### Update Book Details\n\nThis endpoint allows the user to update the details of a specific book.\n\n#### Request Body Parameters\n\n- `title` (text): The title of the book.\n    \n- `price` (text): The price of the book.\n    \n- `pages` (text): The number of pages in the book.\n    \n- `summary` (text): A brief summary of the book.\n    \n- `author` (text): The author of the book.\n    \n- `oldPublicId` (text): The public ID of the book.\n    \n- `image` (file): The image of the book.\n    \n\n#### Request Params\n\n- `bookId` (text): id of book\n    \n\n#### Request Headers\n\n- `accesstoken` (text): the token of user\n    \n\n#### Response\n\nThe response will be a JSON object with the following schema:\n\n``` json\n{\n  \"message\": \"\",\n  \"book\": {\n    \"Image\": {\n      \"secure_url\": \"\",\n      \"public_id\": \"\"\n    },\n    \"_id\": \"\",\n    \"title\": \"\",\n    \"author\": \"\",\n    \"pages\": 0,\n    \"price\": 0,\n    \"summary\": \"\",\n    \"folderId\": \"\",\n    \"addedBy\": \"\",\n    \"createdAt\": \"\",\n    \"updatedAt\": \"\",\n    \"__v\": 0\n  }\n}\n\n ```\n\n- `message` (string): A message indicating the status of the update operation.\n    \n- `book` (object): An object containing the updated book details.\n    \n    - `Image` (object): An object containing the secure URL and public ID of the book's image.\n        \n        - `secure_url` (string): The secure URL of the book's image.\n            \n        - `public_id` (string): The public ID of the book's image.\n            \n    - `_id` (string): The ID of the updated book.\n        \n    - `title` (string): The updated title of the book.\n        \n    - `author` (string): The updated author of the book.\n        \n    - `pages` (number): The updated number of pages in the book.\n        \n    - `price` (number): The updated price of the book.\n        \n    - `summary` (string): The updated summary of the book.\n        \n    - `folderId` (string): The ID of the folder containing the book.\n        \n    - `addedBy` (string): The user who updated the book.\n        \n    - `createdAt` (string): The timestamp of the book's creation.\n        \n    - `updatedAt` (string): The timestamp of the book's last update.\n        \n    - `__v` (number): Version control field."
+					},
+					"response": []
+				},
+				{
+					"name": "delete  book",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accesstoken",
+								"value": "accesstoken_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjliYTJkMWYyNThkNGFmZWIyMjg5MCIsImVtYWlsIjoib3NhbWFAZ21haWwuY29tIiwicm9sZSI6IkFkbWluIiwiaWF0IjoxNzI3NjUyMzg1LCJleHAiOjE3Mjc3Mzg3ODV9.PiXCvQKhg1okvTbgTwsVekP0gkG4E9xr_AikNs-0x5k",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "localhost:3000/book/deleteBook/66f9e3defa4c80ba1e3919a8",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"book",
+								"deleteBook",
+								"66f9e3defa4c80ba1e3919a8"
+							]
+						},
+						"description": "### Delete Book\n\nThis endpoint is used to delete a specific book.\n\n#### Request Params\n\n- `bookId` (text): id of book\n    \n\n#### Request Headers\n\n- `accesstoken` (text): the token of user\n    \n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n- { \"message\": \"\"}"
+					},
+					"response": []
+				},
+				{
+					"name": "get book by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accesstoken",
+								"value": "accesstoken_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjliYTJkMWYyNThkNGFmZWIyMjg5MCIsImVtYWlsIjoib3NhbWFAZ21haWwuY29tIiwicm9sZSI6IkFkbWluIiwiaWF0IjoxNzI3NjUzNjA0LCJleHAiOjE3Mjc3NDAwMDR9.BXwZYUez4o6t_ekf4u3t4o8H1aDifu7J-MklCt__uCU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/book/getBookById/66f9e9d28d0613d1e1970d1a",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"book",
+								"getBookById",
+								"66f9e9d28d0613d1e1970d1a"
+							]
+						},
+						"description": "This API endpoint makes an HTTP GET request to localhost:3000/book/getBookById/{bookId} to retrieve details of a specific book identified by its unique ID. The request does not include a request body, but it expects the book ID to be provided as a path parameter.\n\n#### Request Params\n\n- `bookId` (text): id of book\n    \n\n#### Request Headers\n\n- `accesstoken` (text): the token of user\n    \n\n### Response Body\n\nThe response is in JSON format with a status code of 200. It includes a message field and a book object containing details of the book. The book object includes information such as the book's title, author, number of pages, price, summary, and other metadata.\n\nExample Response:\n\n``` json\n{\n    \"message\": \"\",\n    \"book\": {\n        \"Image\": {\n            \"secure_url\": \"\",\n            \"public_id\": \"\"\n        },\n        \"_id\": \"\",\n        \"title\": \"\",\n        \"author\": \"\",\n        \"pages\": 0,\n        \"price\": 0,\n        \"summary\": \"\",\n        \"folderId\": \"\",\n        \"addedBy\": \"\",\n        \"createdAt\": \"\",\n        \"updatedAt\": \"\",\n        \"__v\": 0\n    }\n}\n\n ```\n\n### Purpose\n\nThe purpose of this API endpoint is to fetch detailed information about a specific book based on its unique ID."
+					},
+					"response": []
+				},
+				{
+					"name": "get all books",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accesstoken",
+								"value": "accesstoken_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjliYTJkMWYyNThkNGFmZWIyMjg5MCIsImVtYWlsIjoib3NhbWFAZ21haWwuY29tIiwicm9sZSI6IkFkbWluIiwiaWF0IjoxNzI3NjUzNjA0LCJleHAiOjE3Mjc3NDAwMDR9.BXwZYUez4o6t_ekf4u3t4o8H1aDifu7J-MklCt__uCU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/book/getAllBooks?page=2&size=1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"book",
+								"getAllBooks"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "size",
+									"value": "1"
+								}
+							]
+						},
+						"description": "This endpoint retrieves a paginated list of books from the server.\n\n### Request\n\n- Method: GET\n    \n- URL: `localhost:3000/book/getAllBooks`\n    \n- Query Parameters:\n    \n    - `page` (number) - The page number for pagination\n        \n    - `size` (number) - The number of books per page\n        \n\n#### Request Headers\n\n- `accesstoken` (text): the token of user\n    \n\n### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n- { \"message\": \"\", \"books\": \\[ { \"Image\": { \"secure_url\": \"\", \"public_id\": \"\" }, \"_id\": \"\", \"title\": \"\", \"author\": \"\", \"pages\": 0, \"price\": 0, \"summary\": \"\", \"folderId\": \"\", \"addedBy\": \"\", \"createdAt\": \"\", \"updatedAt\": \"\", \"__v\": 0 } \\]}\n    \n    - `message` (string) - A message from the server\n        \n    - `books` (array) - An array of book objects with the following properties:\n        \n        - `Image` (object) - The image information for the book\n            \n            - `secure_url` (string) - The secure URL of the image\n                \n            - `public_id` (string) - The public ID of the image\n                \n        - `_id` (string) - The ID of the book\n            \n        - `title` (string) - The title of the book\n            \n        - `author` (string) - The author of the book\n            \n        - `pages` (number) - The number of pages in the book\n            \n        - `price` (number) - The price of the book\n            \n        - `summary` (string) - A summary of the book\n            \n        - `folderId` (string) - The folder ID of the book\n            \n        - `addedBy` (string) - The user who added the book\n            \n        - `createdAt` (string) - The creation timestamp of the book\n            \n        - `updatedAt` (string) - The update timestamp of the book\n            \n        - `__v` (number) - The version of the book object"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
